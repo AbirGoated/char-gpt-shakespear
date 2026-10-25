@@ -59,7 +59,7 @@ cd char-gpt-shakespeare
 pip install torch
 python llm.py
 ```
-The repo includes the trained weights (`gpt.pt`, under 1 MB), so the default run loads the model and prints four samples at different sampling settings. The script downloads the Tiny Shakespeare text each run, so it needs an internet connection.
+The repo includes the trained weights, so the default run loads the model and prints four samples at different sampling settings. The script downloads the Tiny Shakespeare text each run, so it needs an internet connection.
 To train from scratch, set this at the top of `llm.py`:
 TRAIN = True
 
