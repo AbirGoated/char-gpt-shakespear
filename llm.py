@@ -26,7 +26,7 @@ train_data = data[:n]
 val_data = data[n:]
 
 
-TRAIN = False
+TRAIN = True
 CHECKPOINT = "gpt.pt"
 block_size = 64
 batch_size = 32
@@ -169,16 +169,23 @@ print(sum(p.numel() for p in model.parameters()), "parameters")
 if TRAIN:
     optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
     start_time = time.time()
+    rows = []
     for step in range(max_steps + 1):
         if step % eval_interval == 0:
             l = estimate_loss()
-            print(f"step {step:4d} | train {l['train']:.3f} | val {l['val']:.3f} | {time.time() - start_time:.0f}s")
+            elapsed = time.time() - start_time
+            print(f"step {step:4d} | train {l['train']:.3f} | val {l['val']:.3f} | {elapsed:.0f}s")
+            rows.append((step, l['train'], l['val'], elapsed))
         xb, yb = get_batch("train")
         _, loss = model(xb, yb)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
     torch.save(model.state_dict(), CHECKPOINT)
+    print("\n| Step | Train loss | Val loss | Gap | Time (s) |")
+    print("|---:|---:|---:|---:|---:|")
+    for s, tr, va, t in rows:
+        print(f"| {s} | {tr:.3f} | {va:.3f} | {va - tr:.3f} | {t:.0f} |")
 else:
     model.load_state_dict(torch.load(CHECKPOINT))
 
