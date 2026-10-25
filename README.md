@@ -54,7 +54,7 @@ Details:
 ## Quickstart
 In your terminal:
 ```
-git clone https://github.com/YOUR_USERNAME/char-gpt-shakespeare.git
+git clone https://github.com/AbirGoated/char-gpt-shakespeare.git
 cd char-gpt-shakespeare
 pip install torch
 python llm.py
